@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Quiz Game</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="joinRoom">
+        <input type="text" id="nameInput" placeholder="Enter your name" required>
+        <input type="text" id="roomInput" placeholder="Enter room code (000-000)" maxlength="7">
+        <button id="joinButton">Join Room</button>
+        <button id="createButton">Create Room</button>
+    </div>
+
+    <div id="roomPage" style="display: none;">
+        <div>Room Code: <span id="roomCode"></span></div>
+        <div>Players in Room: <ul id="playerList"></ul></div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
