@@ -133,3 +133,33 @@ body {
     color: white;
     font-size: 0.8rem;
 }
+
+
+.centered-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    color: #e0e0e0;
+}
+
+.button-container {
+    margin: 20px;
+}
+
+.input-field {
+    background-color: #252525; /* Matching the input area */
+    color: #e0e0e0; /* Light text for visibility */
+    border: 1px solid #333;
+    border-radius: 4px;
+    padding: 10px;
+    margin: 10px 0;
+    width: 250px; /* Uniform width */
+    font-size: 16px;
+}
+
+.input-field:focus {
+    border-color: #555; /* Slightly lighter for focus highlight */
+    outline: none; /* Remove default focus outline */
+}

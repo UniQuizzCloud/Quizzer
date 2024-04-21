@@ -39,6 +39,8 @@ io.on('connection', (socket) => {
         socket.join(room);
         socket.emit('load messages', rooms[room].messages);
         io.to(room).emit('system message', `${user} joined the chat`);
+        socket.emit('system message', `Your room code is ${room}`);
+
     });
 
     socket.on('chat message', ({ room, msg, user, id }) => {

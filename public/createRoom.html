@@ -6,20 +6,18 @@
     <title>Welcome to ChatRoom</title>
     <link rel="stylesheet" type="text/css" href="style.css">
     <script src="https://kit.fontawesome.com/4da7009d36.js" crossorigin="anonymous"></script>
-    <script src="/socket.io/socket.io.js"></script>
-    <script src="script.js"></script>
 </head>
 <body>
     <div class="centered-container">
-        <h1>Welcome to ChatRoom</h1>
+        <h1>Create A Room</h1>
+        <input type="text" id="user-name" class="input-field" placeholder="Enter your name">
         <div class="button-container">
-            <button onclick="window.location.href='createRoom.html';" id="MainButton">
+            <button onclick="createRoom()" id="MainButton">
                 <i class="fa fa-plus-circle" aria-hidden="true"></i> Create Room
-            </button>
-            <button onclick="window.location.href='joinRoom.html';" id="MainButton2">
-                <i class="fas fa-sign-in-alt"></i> Join Room
             </button>
         </div>
     </div>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
