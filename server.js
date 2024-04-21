@@ -40,6 +40,7 @@ io.on('connection', (socket) => {
         socket.emit('load messages', rooms[room].messages);
         io.to(room).emit('system message', `${user} joined the chat`);
         socket.emit('system message', `Your room code is ${room}`);
+        console.log(`Room Code is ${room}`)
 
     });
 
