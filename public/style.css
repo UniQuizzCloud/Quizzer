@@ -48,7 +48,7 @@ body {
     font-size: 16px;
     cursor: pointer;
     box-shadow: 0 4px 0 #73c976;
-    height: 38px;
+    height: 100%;
 }
 
 #send-button:hover {
@@ -162,4 +162,73 @@ body {
 .input-field:focus {
     border-color: #555; /* Slightly lighter for focus highlight */
     outline: none; /* Remove default focus outline */
+}
+
+.toggle-switch {
+    position: relative;
+    display: inline-block;
+    width: 60px; /* Width of the switch */
+    height: 34px; /* Height of the switch */
+}
+
+.toggle-checkbox {
+    display: none;
+}
+
+.toggle-label {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc; /* Grey background for the off state */
+    transition: background-color 0.4s, box-shadow 0.4s;
+    border-radius: 34px;
+    box-shadow: 0 4px #999; /* Grey shadow when unchecked */
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 5px;
+}
+
+.toggle-label:before {
+    position: relative;
+    content: "";
+    height: 26px; /* Circle height */
+    width: 26px; /* Circle width */
+    background-color: white;
+    transition: transform 0.4s, box-shadow 0.4s;
+    border-radius: 50%;
+    box-shadow: 0 2px #bbb; /* Shadow effect for the toggle circle */
+}
+
+.toggle-checkbox:checked + .toggle-label {
+    background-color: #8C72ED; /* Background color when toggled on */
+    box-shadow: 0 4px #9E89F1; /* Purple shadow when checked */
+}
+
+.toggle-checkbox:checked + .toggle-label:before {
+    transform: translateX(26px); /* Move circle to the right when toggled */
+}
+
+
+.toggle-container {
+    display: flex;
+    align-items: center; /* Center items vertically */
+    gap: 10px; /* Space between the text and the toggle switch */
+}
+
+.toggle-text {
+    color: #e0e0e0; /* Light color for readability on dark backgrounds */
+    font-size: 16px; /* Adjust size as needed */
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap');
+
+.toggle-text {
+    font-family: 'Roboto', sans-serif; /* Uses Roboto with a medium weight */
+    font-size: 16px; /* Optimal for general legibility */
+    font-weight: 500; /* Medium weight balances well with a large toggle */
+    color: #e0e0e0; /* High contrast for readability on darker backgrounds */
 }

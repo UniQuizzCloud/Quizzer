@@ -6,16 +6,25 @@
     <title>Welcome to ChatRoom</title>
     <link rel="stylesheet" type="text/css" href="style.css">
     <script src="https://kit.fontawesome.com/4da7009d36.js" crossorigin="anonymous"></script>
+    
 </head>
 <body>
     <div class="centered-container">
         <h1>Create A Room</h1>
         <input type="text" id="user-name" class="input-field" placeholder="Enter your name">
+        <div class="toggle-container">
+            <div class="toggle-switch">
+                <input type="checkbox" id="preserveMessages" class="toggle-checkbox">
+                <label for="preserveMessages" class="toggle-label"></label>
+            </div>
+            <span class="toggle-text">Clear Chats After 24 Hours</span>
+        </div>  
         <div class="button-container">
             <button onclick="createRoom()" id="MainButton">
                 <i class="fa fa-plus-circle" aria-hidden="true"></i> Create Room
             </button>
-        </div>
+        </div>      
+    </div>
     </div>
     <script src="/socket.io/socket.io.js"></script>
     <script src="script.js"></script>

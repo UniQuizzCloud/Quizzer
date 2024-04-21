@@ -13,40 +13,38 @@ const socketUserMap = {};  // Maps socket IDs to user information
 app.use(express.static('public'));
 
 io.on('connection', (socket) => {
-    // Existing join room and chat message handling...
 
     socket.on('typing', ({ room, user }) => {
-        const userColor = rooms[room].users[socketUserMap[socket.id].id].color;
-        socket.broadcast.to(room).emit('user typing', { user, color: userColor });
+        if (rooms[room] && rooms[room].users[socket.id]) {
+            const userColor = rooms[room].users[socket.id].color;
+            socket.broadcast.to(room).emit('user typing', { user, color: userColor });
+        }
     });
 
     socket.on('stop typing', ({ room, user }) => {
         socket.broadcast.to(room).emit('user stop typing', { user });
     });
 
-
-    socket.on('join room', ({ room, user, id }) => {
+    socket.on('join room', ({ room, user, id, preserveMessages }) => {
         if (!rooms[room]) {
-            rooms[room] = { users: {}, messages: [], userCount: 0 };
+            rooms[room] = { users: {}, messages: [], userCount: 0, preserveMessages };
         }
 
-        rooms[room].users[id] = { name: user, color: getRandomColor() };
-        rooms[room].userCount++;  // Increment user count
+        rooms[room].users[socket.id] = { name: user, color: getRandomColor(), id };
+        rooms[room].userCount++;
 
-        socketRoomMap[socket.id] = room;
-        socketUserMap[socket.id] = { user: user, id: id };
+        socketRoomMap[socket.id] = room;  // Map socket ID to room name
+        socketUserMap[socket.id] = { name: user, id };  // Map socket ID to user info
 
         socket.join(room);
         socket.emit('load messages', rooms[room].messages);
         io.to(room).emit('system message', `${user} joined the chat`);
-        socket.emit('system message', `Your room code is ${room}`);
-        console.log(`Room Code is ${room}`)
-
+        console.log(`Room Code is ${room}`);
     });
 
     socket.on('chat message', ({ room, msg, user, id }) => {
         if (rooms[room]) {
-            const messageData = { msg, user: rooms[room].users[id].name, color: rooms[room].users[id].color, id };
+            const messageData = { msg, user: rooms[room].users[socket.id].name, color: rooms[room].users[socket.id].color, id };
             rooms[room].messages.push(messageData);
             io.to(room).emit('chat message', messageData);
         }
@@ -54,21 +52,18 @@ io.on('connection', (socket) => {
 
     socket.on('disconnect', () => {
         const room = socketRoomMap[socket.id];
-        const userInfo = socketUserMap[socket.id];
-
-        if (room && userInfo) {
-            // Decrease the user count immediately upon disconnection
-            if (--rooms[room].userCount === 0) {
-                // If no users are left, clear messages
-                rooms[room].messages = [];
-            } else {
-                io.to(room).emit('system message', `${userInfo.user} left the chat`);
+        if (room && rooms[room]) {
+            const userInfo = rooms[room].users[socket.id];
+            if (--rooms[room].userCount === 0 && !rooms[room].preserveMessages) {
+                delete rooms[room];
+            } else if (userInfo) {
+                io.to(room).emit('system message', `${userInfo.name} left the chat`);
             }
-
-            delete rooms[room].users[userInfo.id];
-            delete socketRoomMap[socket.id];
-            delete socketUserMap[socket.id];
+            delete rooms[room]?.users[socket.id];
         }
+
+        delete socketRoomMap[socket.id];  // Remove mapping on disconnect
+        delete socketUserMap[socket.id];  // Remove user mapping on disconnect
     });
 });
 

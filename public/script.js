@@ -22,14 +22,15 @@ function createRoom() {
     if (userName) {
         const userId = generateUniqueId(userName);
         room = Math.floor(100000 + Math.random() * 900000).toString();
+        const preserveMessages = document.getElementById('preserveMessages').checked;
         alert('Your room code is: ' + room);
-        socket.emit('join room', { room, user: userName, id: userId });
+        socket.emit('join room', { room, user: userName, id: userId, preserveMessages });
         window.location.href = `room.html?room=${room}&name=${encodeURIComponent(userName)}&id=${encodeURIComponent(userId)}`;
-        io.to(room).emit('system message', `Your room code is ${room}`);
     } else {
         alert('Please enter your name.');
     }
 }
+
 
 // Function to send a message
 function sendMessage() {
@@ -50,12 +51,8 @@ socket.on('chat message', (data) => {
 
 // Load and display past messages
 socket.on('load messages', (data) => {
-    // Assuming 'data' includes both messages and user details
-    data.messages.forEach((msg) => {
+    data.forEach((msg) => {
         displayMessage(msg);
-    });
-    data.users.forEach((user) => {
-        createUserPills(user.name, '#ccc');  // Using default grey, replace with user.color if available
     });
     scrollToBottom();
 });
